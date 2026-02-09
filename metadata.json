@@ -1,0 +1,7 @@
+{
+  "name": "Rabello ADS - Gestão de Tráfego e Consultoria",
+  "description": "Site institucional e blog da Rabello ADS, focado em gestão de tráfego, consultoria estratégica e conteúdo educativo.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
