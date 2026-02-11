@@ -15,12 +15,12 @@ const AboutPage: React.FC = () => {
 
       <div className="container mx-auto px-6 py-24">
         <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 mb-24">
-            <div>
-              <h2 className="text-4xl font-black text-base-blue mb-6 tracking-tight italic">Nossa Filosofia</h2>
-              <p className="text-lg text-gray-500 leading-relaxed italic">
-                O mercado digital é saturado de promessas vazias. Nossa missão é trazer clareza e processo industrial para o marketing. Trabalhamos com fatos, não com opiniões.
-              </p>
+          <div className="grid md:grid-cols-2 gap-16 mb-24 items-center">
+            <div className="relative flex items-center justify-center min-h-[250px]">
+                <div className="absolute w-48 h-48 bg-brand-blue/10 rounded-full blur-2xl animate-pulse"></div>
+                <div className="absolute w-40 h-40 bg-brand-green/10 rounded-full blur-2xl top-0 left-10 animate-pulse delay-300"></div>
+                <div className="absolute w-32 h-32 bg-brand-amber/10 rounded-full blur-2xl bottom-0 right-10 animate-pulse delay-500"></div>
+                <RabelloLogo className="w-48 h-48 relative z-10 drop-shadow-lg" />
             </div>
             <div className="flex flex-col justify-center space-y-4">
               <div className="bg-light-gray p-6 rounded-2xl border-l-4 border-brand-green">
