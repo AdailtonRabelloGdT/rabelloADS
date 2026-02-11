@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { RabelloLogo } from '../components/Header';
+// Fix: Corrected import for RabelloLogo from its own file instead of from Header.
+import { RabelloLogo } from '../components/RabelloLogo';
 
 const HomePage: React.FC = () => {
   return (

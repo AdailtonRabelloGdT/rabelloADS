@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { RabelloLogo } from '../components/Header';
+// Fix: Corrected import for RabelloLogo from its own file instead of from Header.
+import { RabelloLogo } from '../components/RabelloLogo';
 
 const AboutPage: React.FC = () => {
   return (
