@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || "postgresql://neondb_owner:npg_ZnSq7Oizl5Dg@ep-green-shape-ac4bvdou-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
