@@ -4,6 +4,7 @@ import pg from "pg";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL || "postgresql://neondb_owner:npg_ZnSq7Oizl5Dg@ep-green-shape-ac4bvdou-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
   ssl: {
     rejectUnauthorized: false
   }
@@ -118,10 +119,58 @@ async function startServer() {
         [name, email, phone, message, source || 'website']
       );
       
-      res.status(201).json({ success: true, lead: result.rows[0] });
+      const newLead = result.rows[0];
+
+      // Enviar notificação por email
+      if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
+          }
+        });
+
+        const mailOptions = {
+          from: process.env.SMTP_USER,
+          to: 'adailtonrabellogestaodetrafego@gmail.com',
+          subject: `🚀 Novo Lead Recebido: ${name}`,
+          html: `
+            <h2>Você recebeu um novo lead pelo site!</h2>
+            <p><strong>Nome:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email || 'Não informado'}</p>
+            <p><strong>Telefone:</strong> ${phone || 'Não informado'}</p>
+            <p><strong>Origem:</strong> ${source || 'Website'}</p>
+            <p><strong>Mensagem:</strong></p>
+            <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #ccc;">
+              ${message || 'Sem mensagem'}
+            </blockquote>
+          `
+        };
+
+        transporter.sendMail(mailOptions).catch(err => {
+          console.error("Erro ao enviar email de notificação:", err);
+        });
+      } else {
+        console.warn("⚠️ SMTP_USER ou SMTP_PASS não configurados. O email de notificação não foi enviado.");
+      }
+      
+      res.status(201).json({ success: true, lead: newLead });
     } catch (err) {
       console.error("Erro ao salvar lead:", err);
       res.status(500).json({ error: "Erro interno ao salvar o lead." });
+    }
+  });
+
+  app.get("/api/leads", async (req, res) => {
+    try {
+      const result = await pool.query(`
+        SELECT * FROM leads ORDER BY created_at DESC
+      `);
+      res.json(result.rows);
+    } catch (err) {
+      console.error("Erro ao buscar leads:", err);
+      res.status(500).json({ error: "Erro interno ao buscar leads." });
     }
   });
 

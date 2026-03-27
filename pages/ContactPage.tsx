@@ -1,7 +1,48 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ContactPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      website: formData.get('website'),
+      budget: formData.get('budget'),
+      message: formData.get('message'),
+      source: 'website_contact_form'
+    };
+
+    try {
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar o formulário. Tente novamente.');
+      }
+
+      navigate('/obrigado');
+    } catch (err: any) {
+      setError(err.message || 'Erro inesperado.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-white py-16 md:py-32">
       <div className="container mx-auto px-6">
@@ -35,10 +76,12 @@ const ContactPage: React.FC = () => {
           </div>
 
           <div className="bg-light-gray p-8 md:p-12 rounded-[48px] shadow-sm border border-gray-100">
-            <form action="https://formsubmit.co/adailton@rabelloads.com.br" method="POST" className="space-y-6">
-              {/* FormSubmit Configuration */}
-              <input type="hidden" name="_next" value={window.location.origin + "/#/obrigado"}/>
-              <input type="hidden" name="_captcha" value="false"/>
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl border border-red-100 text-sm font-medium">
+                {error}
+              </div>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-6">
               
               <div className="grid grid-cols-1 gap-6">
                 <div>
@@ -68,8 +111,8 @@ const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <button type="submit" className="w-full bg-base-blue text-white font-black py-5 rounded-2xl hover:bg-brand-blue transition-all shadow-xl shadow-blue-500/10 uppercase tracking-[0.2em] text-sm">
-                Enviar para Diagnóstico
+              <button type="submit" disabled={isSubmitting} className="w-full bg-base-blue text-white font-black py-5 rounded-2xl hover:bg-brand-blue transition-all shadow-xl shadow-blue-500/10 uppercase tracking-[0.2em] text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                {isSubmitting ? 'Enviando...' : 'Enviar para Diagnóstico'}
               </button>
             </form>
           </div>
