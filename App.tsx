@@ -12,10 +12,12 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import ScrollToTop from './components/ScrollToTop';
+import GoogleAnalyticsTracker from './components/GoogleAnalyticsTracker';
 
 const App: React.FC = () => {
   return (
     <HashRouter>
+      <GoogleAnalyticsTracker />
       <ScrollToTop />
       <SpeedInsights />
       <div className="flex flex-col min-h-screen relative">
