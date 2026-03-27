@@ -8,7 +8,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="bg-white overflow-hidden">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-32 md:pt-32 md:pb-48 bg-light-gray">
+      <section className="relative pt-20 pb-32 md:pt-32 md:pb-48 bg-white">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-blue/5 blur-3xl rounded-full -mr-20 -mt-20"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">

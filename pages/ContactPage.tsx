@@ -75,7 +75,7 @@ const ContactPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-light-gray p-8 md:p-12 rounded-[48px] shadow-sm border border-gray-100">
+          <div className="bg-gray-50 p-8 md:p-12 rounded-[48px] shadow-md border border-gray-200">
             {error && (
               <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl border border-red-100 text-sm font-medium">
                 {error}
@@ -86,19 +86,19 @@ const ContactPage: React.FC = () => {
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Nome Completo</label>
-                  <input type="text" name="name" required className="w-full px-6 py-4 rounded-2xl bg-white border-transparent focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: Adailton Rabello"/>
+                  <input type="text" name="name" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: Seu Nome"/>
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">E-mail Profissional</label>
-                  <input type="email" name="email" required className="w-full px-6 py-4 rounded-2xl bg-white border-transparent focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="seu@email.com"/>
+                  <input type="email" name="email" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="seu@email.com"/>
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Qual seu Site / Instagram?</label>
-                  <input type="text" name="website" className="w-full px-6 py-4 rounded-2xl bg-white border-transparent focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="www.suaempresa.com.br"/>
+                  <input type="text" name="website" className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="www.suaempresa.com.br"/>
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Investimento em Ads / Mês</label>
-                  <select name="budget" required className="w-full px-6 py-4 rounded-2xl bg-white border-transparent focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
+                  <select name="budget" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
                     <option value="iniciante">Ainda não invisto</option>
                     <option value="baixo">R$ 1.000 - R$ 3.000</option>
                     <option value="medio">R$ 3.000 - R$ 10.000</option>
@@ -107,7 +107,7 @@ const ContactPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Qual o seu maior desafio hoje?</label>
-                  <textarea name="message" rows={3} required className="w-full px-6 py-4 rounded-2xl bg-white border-transparent focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: Preciso de mais leads qualificados..."></textarea>
+                  <textarea name="message" rows={3} required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: Preciso de mais leads qualificados..."></textarea>
                 </div>
               </div>
 

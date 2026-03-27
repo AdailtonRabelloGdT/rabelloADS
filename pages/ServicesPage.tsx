@@ -40,7 +40,7 @@ const ServicesPage: React.FC = () => {
 
   return (
     <div className="bg-white">
-      <div className="bg-light-gray py-16 md:py-24 border-b border-gray-100">
+      <div className="bg-white py-16 md:py-24 border-b border-gray-100">
         <div className="container mx-auto px-6 text-center">
           <div className="inline-block px-4 py-1 mb-4 bg-brand-blue/10 rounded-full text-brand-blue text-xs font-black uppercase tracking-widest">
             Performance Industrial
@@ -65,7 +65,7 @@ const ServicesPage: React.FC = () => {
                 className={`text-left p-6 rounded-3xl transition-all border-2 ${
                   activeTab === step.id 
                     ? 'border-brand-blue bg-brand-blue/5 shadow-lg scale-105' 
-                    : 'border-transparent bg-light-gray hover:bg-gray-100'
+                    : 'border-transparent bg-white hover:bg-gray-100'
                 }`}
               >
                 <div className="text-3xl mb-4">{step.icon}</div>

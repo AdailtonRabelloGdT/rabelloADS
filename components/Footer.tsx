@@ -6,7 +6,7 @@ import { RabelloLogo } from './RabelloLogo';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-light-gray border-t border-gray-200">
+    <footer className="bg-white border-t border-gray-200">
       <div className="container mx-auto px-6 py-20">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-1">

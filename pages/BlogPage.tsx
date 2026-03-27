@@ -19,7 +19,7 @@ const BlogPage: React.FC = () => {
 
   return (
     <div className="bg-white">
-      <div className="bg-light-gray border-b border-gray-100">
+      <div className="bg-white border-b border-gray-100">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-base-blue tracking-tight">Blog Rabello ADS</h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600">

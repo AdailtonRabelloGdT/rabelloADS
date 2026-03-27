@@ -19,7 +19,7 @@ const ConsultingPage: React.FC = () => {
             { title: "Plano de Ação", desc: "O que fazer nos próximos 90 dias.", color: "border-brand-blue" },
             { title: "Validação", desc: "A sua oferta realmente funciona?", color: "border-brand-green" }
           ].map((item, i) => (
-            <div key={i} className={`border-l-4 ${item.color} p-8 bg-light-gray rounded-r-2xl`}>
+            <div key={i} className={`border-l-4 ${item.color} p-8 bg-white rounded-r-2xl`}>
               <h3 className="text-2xl font-black text-base-blue mb-2 italic">{item.title}</h3>
               <p className="text-gray-500 italic font-medium">{item.desc}</p>
             </div>

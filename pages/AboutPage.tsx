@@ -24,11 +24,11 @@ const AboutPage: React.FC = () => {
                 <RabelloLogo className="w-48 h-48 relative z-10 drop-shadow-lg" />
             </div>
             <div className="flex flex-col justify-center space-y-4">
-              <div className="bg-light-gray p-6 rounded-2xl border-l-4 border-brand-green">
+              <div className="bg-white p-6 rounded-2xl border-l-4 border-brand-green">
                 <p className="font-bold text-base-blue">Missão</p>
                 <p className="text-sm text-gray-500 italic">Educar e escalar negócios através de dados conscientes.</p>
               </div>
-              <div className="bg-light-gray p-6 rounded-2xl border-l-4 border-brand-blue">
+              <div className="bg-white p-6 rounded-2xl border-l-4 border-brand-blue">
                 <p className="font-bold text-base-blue">Visão</p>
                 <p className="text-sm text-gray-500 italic">Ser a referência em transparência no mercado de tráfego pago.</p>
               </div>
