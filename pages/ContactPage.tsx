@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { analyzeLead } from '../lib/gemini';
 
 const ContactPage: React.FC = () => {
   const navigate = useNavigate();
@@ -17,9 +18,12 @@ const ContactPage: React.FC = () => {
       name: formData.get('name'),
       email: formData.get('email'),
       phone: formData.get('phone'),
-      website: formData.get('website'),
+      niche: formData.get('niche'),
       budget: formData.get('budget'),
-      message: formData.get('message'),
+      objective: formData.get('objective'),
+      traffic: formData.get('traffic'),
+      challenge: formData.get('challenge'),
+      urgency: formData.get('urgency'),
       source: 'website_contact_form'
     };
 
@@ -42,6 +46,21 @@ const ContactPage: React.FC = () => {
         }
         throw new Error(errorMessage);
       }
+
+      const { lead } = await response.json();
+
+      // Run AI analysis in the background
+      analyzeLead(data).then(async (analysis) => {
+        if (analysis.aiSummary) {
+          await fetch(`/api/leads/${lead.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(analysis),
+          });
+        }
+      }).catch(err => console.error("Erro na análise de IA:", err));
 
       navigate('/obrigado');
     } catch (err: any) {
@@ -105,21 +124,50 @@ const ContactPage: React.FC = () => {
                   <input type="tel" name="phone" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="(11) 99999-9999"/>
                 </div>
                 <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Qual seu Site / Instagram?</label>
-                  <input type="text" name="website" className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="www.suaempresa.com.br"/>
+                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Nicho de Atuação</label>
+                  <input type="text" name="niche" className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: E-commerce, Saúde, Imobiliário"/>
+                </div>
+                <div>
+                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Qual seu objetivo principal?</label>
+                  <select name="objective" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
+                    <option value="">Selecione...</option>
+                    <option value="Vendas Diretas">Vendas Diretas</option>
+                    <option value="Geração de Leads">Geração de Leads</option>
+                    <option value="Reconhecimento de Marca">Reconhecimento de Marca</option>
+                    <option value="Lançamento">Lançamento de Infoproduto</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Situação do Tráfego Atual</label>
+                  <select name="traffic" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
+                    <option value="">Selecione...</option>
+                    <option value="Nunca anunciei">Nunca anunciei</option>
+                    <option value="Já anunciei, mas parei">Já anunciei, mas parei</option>
+                    <option value="Já roda anúncios">Já rodo anúncios atualmente</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Investimento em Ads / Mês</label>
                   <select name="budget" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
+                    <option value="">Selecione...</option>
                     <option value="iniciante">Ainda não invisto</option>
                     <option value="baixo">R$ 1.000 - R$ 3.000</option>
                     <option value="medio">R$ 3.000 - R$ 10.000</option>
-                    <option value="alto">Acima de R$ 10.000</option>
+                    <option value="10000+">Acima de R$ 10.000</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Urgência para Iniciar</label>
+                  <select name="urgency" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
+                    <option value="">Selecione...</option>
+                    <option value="Alta">Imediata (Para ontem)</option>
+                    <option value="Media">Próximos 15 dias</option>
+                    <option value="Baixa">Sem pressa (Apenas pesquisando)</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Qual o seu maior desafio hoje?</label>
-                  <textarea name="message" rows={3} required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: Preciso de mais leads qualificados..."></textarea>
+                  <textarea name="challenge" rows={3} required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: Preciso de mais leads qualificados..."></textarea>
                 </div>
               </div>
 
