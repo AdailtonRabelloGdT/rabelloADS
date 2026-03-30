@@ -330,17 +330,7 @@ async function startServer() {
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      configFile: path.resolve(__dirname, "vite.config.ts"),
-      server: {
-        middlewareMode: true,
-        hmr: false,
-        ws: false,
-        port: 3000,
-        watch: {
-          usePolling: true,
-          interval: 1000
-        }
-      },
+      server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);

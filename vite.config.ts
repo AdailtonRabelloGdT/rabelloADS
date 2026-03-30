@@ -8,11 +8,9 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
-        hmr: false,
-        ws: false,
-        watch: {
-          usePolling: true,
-          interval: 1000
+        hmr: {
+          clientPort: 443,
+          port: 24679,
         }
       },
       plugins: [react()],
