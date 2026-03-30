@@ -8,14 +8,23 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
-        hmr: false,
-        ws: false,
-        watch: {
-          usePolling: true,
-          interval: 1000
+        hmr: {
+          clientPort: 443,
+          port: 24679,
         }
       },
       plugins: [react()],
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks(id) {
+              if (id.includes('node_modules')) {
+                return 'vendor';
+              }
+            }
+          }
+        }
+      },
       define: {
         'process.env.GEMINI_API_KEY': 'process.env.GEMINI_API_KEY',
         'process.env.API_KEY': 'process.env.API_KEY'
