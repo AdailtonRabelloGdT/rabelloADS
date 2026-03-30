@@ -33,7 +33,14 @@ const ContactPage: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Erro ao enviar o formulário. Tente novamente.');
+        let errorMessage = 'Erro ao enviar o formulário. Tente novamente.';
+        try {
+          const errorData = await response.json();
+          if (errorData.error) errorMessage = errorData.error;
+        } catch (e) {
+          // Ignore JSON parse error
+        }
+        throw new Error(errorMessage);
       }
 
       navigate('/obrigado');

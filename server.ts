@@ -30,6 +30,8 @@ async function initializeDatabase() {
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255),
         phone VARCHAR(50),
+        website VARCHAR(255),
+        budget VARCHAR(100),
         message TEXT,
         source VARCHAR(100),
         status VARCHAR(50) DEFAULT 'novo',
@@ -37,8 +39,11 @@ async function initializeDatabase() {
       );
     `);
     
-    // Ajustar fuso horário de tabelas existentes
+    // Ajustar fuso horário de tabelas existentes e adicionar coluna phone
     await pool.query(`
+      ALTER TABLE leads ADD COLUMN IF NOT EXISTS phone VARCHAR(50);
+      ALTER TABLE leads ADD COLUMN IF NOT EXISTS website VARCHAR(255);
+      ALTER TABLE leads ADD COLUMN IF NOT EXISTS budget VARCHAR(100);
       ALTER TABLE leads 
       ALTER COLUMN created_at TYPE TIMESTAMP WITHOUT TIME ZONE USING created_at AT TIME ZONE 'America/Sao_Paulo',
       ALTER COLUMN created_at SET DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo');
@@ -113,44 +118,50 @@ async function startServer() {
   // --- LEADS API ---
   app.post("/api/leads", async (req, res) => {
     try {
-      const { name, email, phone, message, source } = req.body;
+      const { name, email, phone, website, budget, message, source } = req.body;
       
       if (!name) {
         return res.status(400).json({ error: "O nome é obrigatório." });
       }
 
       const result = await pool.query(
-        `INSERT INTO leads (name, email, phone, message, source) 
-         VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-        [name, email, phone, message, source || 'website']
+        `INSERT INTO leads (name, email, phone, website, budget, message, source) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+        [name, email, phone, website, budget, message, source || 'website']
       );
       
       const newLead = result.rows[0];
 
       // Enviar notificação por email via FormSubmit (Zero Configuração)
       // Isso elimina qualquer problema de SMTP, Senha de App, ou bloqueios do Gmail.
-      fetch("https://formsubmit.co/ajax/adailtonrabellogestaodetrafego@gmail.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          _subject: `🚀 Novo Lead Recebido: ${name}`,
-          Nome: name,
-          Email: email || 'Não informado',
-          WhatsApp: phone || 'Não informado',
-          Origem: source || 'Website',
-          Mensagem: message || 'Sem mensagem'
-        })
-      }).catch(err => {
-        console.error("Erro silencioso ao enviar notificação via FormSubmit:", err);
-      });
+      try {
+        fetch("https://formsubmit.co/ajax/adailtonrabellogestaodetrafego@gmail.com", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            _subject: `🚀 Novo Lead Recebido: ${name}`,
+            Nome: name,
+            Email: email || 'Não informado',
+            WhatsApp: phone || 'Não informado',
+            Site_Instagram: website || 'Não informado',
+            Verba_Ads: budget || 'Não informado',
+            Origem: source || 'Website',
+            Mensagem: message || 'Sem mensagem'
+          })
+        }).catch(err => {
+          console.error("Erro silencioso ao enviar notificação via FormSubmit:", err);
+        });
+      } catch (fetchErr) {
+        console.error("Erro ao tentar usar fetch (versão do Node?):", fetchErr);
+      }
       
       res.status(201).json({ success: true, lead: newLead });
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao salvar lead:", err);
-      res.status(500).json({ error: "Erro interno ao salvar o lead." });
+      res.status(500).json({ error: "Erro interno ao salvar o lead: " + (err.message || String(err)) });
     }
   });
 
