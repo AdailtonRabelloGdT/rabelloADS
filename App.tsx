@@ -12,7 +12,6 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import AdminLeadsPage from './pages/AdminLeadsPage';
-import ThankYouPage from './pages/ThankYouPage';
 import ScrollToTop from './components/ScrollToTop';
 import GoogleAnalyticsTracker from './components/GoogleAnalyticsTracker';
 
@@ -32,7 +31,6 @@ const App: React.FC = () => {
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/sobre" element={<AboutPage />} />
             <Route path="/contato" element={<ContactPage />} />
-            <Route path="/obrigado" element={<ThankYouPage />} />
             <Route path="/politica-de-privacidade" element={<PrivacyPolicyPage />} />
             <Route path="/admin/leads" element={<AdminLeadsPage />} />
           </Routes>
