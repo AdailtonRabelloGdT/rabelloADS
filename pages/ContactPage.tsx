@@ -16,6 +16,7 @@ const ContactPage: React.FC = () => {
     const data = {
       name: formData.get('name'),
       email: formData.get('email'),
+      phone: formData.get('phone'),
       website: formData.get('website'),
       budget: formData.get('budget'),
       message: formData.get('message'),
@@ -75,7 +76,7 @@ const ContactPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-8 md:p-12 rounded-[48px] shadow-md border border-gray-200">
+          <div className="bg-gray-100 p-8 md:p-12 rounded-[48px] shadow-md border border-gray-200">
             {error && (
               <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl border border-red-100 text-sm font-medium">
                 {error}
@@ -91,6 +92,10 @@ const ContactPage: React.FC = () => {
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">E-mail Profissional</label>
                   <input type="email" name="email" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="seu@email.com"/>
+                </div>
+                <div>
+                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">WhatsApp (com DDD)</label>
+                  <input type="tel" name="phone" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="(11) 99999-9999"/>
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Qual seu Site / Instagram?</label>

@@ -4,7 +4,6 @@ import pg from "pg";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
-import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -34,8 +33,15 @@ async function initializeDatabase() {
         message TEXT,
         source VARCHAR(100),
         status VARCHAR(50) DEFAULT 'novo',
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo')
       );
+    `);
+    
+    // Ajustar fuso horário de tabelas existentes
+    await pool.query(`
+      ALTER TABLE leads 
+      ALTER COLUMN created_at TYPE TIMESTAMP WITHOUT TIME ZONE USING created_at AT TIME ZONE 'America/Sao_Paulo',
+      ALTER COLUMN created_at SET DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo');
     `);
 
     // Tabela de Autores do Blog
@@ -121,39 +127,25 @@ async function startServer() {
       
       const newLead = result.rows[0];
 
-      // Enviar notificação por email
-      if (process.env.SMTP_USER && process.env.SMTP_PASS) {
-        const transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS
-          }
-        });
-
-        const mailOptions = {
-          from: process.env.SMTP_USER,
-          to: 'adailtonrabellogestaodetrafego@gmail.com',
-          subject: `🚀 Novo Lead Recebido: ${name}`,
-          html: `
-            <h2>Você recebeu um novo lead pelo site!</h2>
-            <p><strong>Nome:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email || 'Não informado'}</p>
-            <p><strong>Telefone:</strong> ${phone || 'Não informado'}</p>
-            <p><strong>Origem:</strong> ${source || 'Website'}</p>
-            <p><strong>Mensagem:</strong></p>
-            <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #ccc;">
-              ${message || 'Sem mensagem'}
-            </blockquote>
-          `
-        };
-
-        transporter.sendMail(mailOptions).catch(err => {
-          console.error("Erro ao enviar email de notificação:", err);
-        });
-      } else {
-        console.warn("⚠️ SMTP_USER ou SMTP_PASS não configurados. O email de notificação não foi enviado.");
-      }
+      // Enviar notificação por email via FormSubmit (Zero Configuração)
+      // Isso elimina qualquer problema de SMTP, Senha de App, ou bloqueios do Gmail.
+      fetch("https://formsubmit.co/ajax/adailtonrabellogestaodetrafego@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          _subject: `🚀 Novo Lead Recebido: ${name}`,
+          Nome: name,
+          Email: email || 'Não informado',
+          WhatsApp: phone || 'Não informado',
+          Origem: source || 'Website',
+          Mensagem: message || 'Sem mensagem'
+        })
+      }).catch(err => {
+        console.error("Erro silencioso ao enviar notificação via FormSubmit:", err);
+      });
       
       res.status(201).json({ success: true, lead: newLead });
     } catch (err) {
