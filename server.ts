@@ -175,10 +175,13 @@ function startBackgroundTasks() {
 
 async function startServer() {
   // Inicializa o banco de dados antes de subir o servidor
+  console.log("Iniciando o servidor...");
   await initializeDatabase();
+  console.log("Banco de dados inicializado.");
   
   // Inicia as tarefas em background
   startBackgroundTasks();
+  console.log("Tarefas em background iniciadas.");
 
   const app = express();
   const PORT = 3000;
