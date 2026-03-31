@@ -40,17 +40,27 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="md:hidden bg-white py-4">
-          <div className="container mx-auto px-6 flex flex-col space-y-4">
-            <NavLink to="/" className={({ isActive }) => `block text-center py-2 ${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`} onClick={() => setIsOpen(false)}>Home</NavLink>
-            <NavLink to="/sobre" className={({ isActive }) => `block text-center py-2 ${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`} onClick={() => setIsOpen(false)}>Sobre</NavLink>
-            <NavLink to="/blog" className={({ isActive }) => `block text-center py-2 ${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`} onClick={() => setIsOpen(false)}>Blog</NavLink>
-            <NavLink to="/servicos/gestao-de-trafego" className={({ isActive }) => `block text-center py-2 ${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`} onClick={() => setIsOpen(false)}>Serviços</NavLink>
-            <Link to="/contato" className="text-center bg-base-blue text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-lg hover:bg-brand-blue transition-colors" onClick={() => setIsOpen(false)}>
-              Iniciar Projeto
-            </Link>
+        <div className="fixed inset-0 z-50 md:hidden" onClick={() => setIsOpen(false)}>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          <div className="absolute inset-y-0 right-0 w-3/4 max-w-sm bg-white shadow-xl p-6 flex flex-col space-y-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-end">
+              <button onClick={() => setIsOpen(false)} className="text-base-blue">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div className="flex flex-col space-y-4">
+              <NavLink to="/" className={({ isActive }) => `block text-left py-2 ${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`} onClick={() => setIsOpen(false)}>Home</NavLink>
+              <NavLink to="/sobre" className={({ isActive }) => `block text-left py-2 ${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`} onClick={() => setIsOpen(false)}>Sobre</NavLink>
+              <NavLink to="/blog" className={({ isActive }) => `block text-left py-2 ${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`} onClick={() => setIsOpen(false)}>Blog</NavLink>
+              <NavLink to="/servicos/gestao-de-trafego" className={({ isActive }) => `block text-left py-2 ${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`} onClick={() => setIsOpen(false)}>Serviços</NavLink>
+              <Link to="/contato" className="text-center bg-base-blue text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-lg hover:bg-brand-blue transition-colors" onClick={() => setIsOpen(false)}>
+                Iniciar Projeto
+              </Link>
+            </div>
           </div>
         </div>
       )}

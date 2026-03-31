@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Author {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  bio        String?
+  avatarUrl  String?   @map("avatar_url") @db.VarChar(255)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  posts      Post[]
+
+  @@map("blog_authors")
+}
+
+model Category {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(100)
+  slug       String    @unique @db.VarChar(100)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  posts      Post[]
+
+  @@map("blog_categories")
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  slug        String    @unique @db.VarChar(255)
+  content     String
+  excerpt     String?
+  coverImage  String?   @map("cover_image") @db.VarChar(255)
+  authorId    Int?      @map("author_id")
+  categoryId  Int?      @map("category_id")
+  published   Boolean?  @default(false)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
+  
+  author      Author?   @relation(fields: [authorId], references: [id], onUpdate: NoAction)
+  category    Category? @relation(fields: [categoryId], references: [id], onUpdate: NoAction)
+
+  @@map("blog_posts")
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+
+  niche     String?
+  budget    String?
+  objective String?
+  traffic   String?
+  challenge String?
+  urgency   String?
+
+  score     Int?
+  status    String? @default("new")
+
+  aiSummary String?
+  aiStrategy String?
+  closeProb Int?
+
+  createdAt DateTime @default(now())
+}

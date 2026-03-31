@@ -17,9 +17,12 @@ const ContactPage: React.FC = () => {
       name: formData.get('name'),
       email: formData.get('email'),
       phone: formData.get('phone'),
-      website: formData.get('website'),
+      niche: formData.get('niche'),
       budget: formData.get('budget'),
-      message: formData.get('message'),
+      objective: formData.get('objective'),
+      traffic: formData.get('traffic'),
+      challenge: formData.get('challenge'),
+      urgency: formData.get('urgency'),
       source: 'website_contact_form'
     };
 
@@ -33,7 +36,8 @@ const ContactPage: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Erro ao enviar o formulário. Tente novamente.');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erro ao enviar o formulário. Tente novamente.');
       }
 
       navigate('/obrigado');
@@ -99,7 +103,7 @@ const ContactPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Qual seu Site / Instagram?</label>
-                  <input type="text" name="website" className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="www.suaempresa.com.br"/>
+                  <input type="text" name="niche" className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="www.suaempresa.com.br"/>
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Investimento em Ads / Mês</label>
@@ -111,8 +115,32 @@ const ContactPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
+                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Objetivo Principal</label>
+                  <select name="objective" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
+                    <option value="vendas">Aumentar Vendas</option>
+                    <option value="leads">Gerar Leads/Contatos</option>
+                    <option value="branding">Reconhecimento de Marca</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Já faz tráfego pago?</label>
+                  <select name="traffic" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
+                    <option value="sim_agencia">Sim, com agência</option>
+                    <option value="sim_interno">Sim, equipe interna</option>
+                    <option value="nao">Não</option>
+                  </select>
+                </div>
+                <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Qual o seu maior desafio hoje?</label>
-                  <textarea name="message" rows={3} required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: Preciso de mais leads qualificados..."></textarea>
+                  <textarea name="challenge" rows={3} required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic" placeholder="Ex: Preciso de mais leads qualificados..."></textarea>
+                </div>
+                <div>
+                  <label className="block text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Urgência</label>
+                  <select name="urgency" required className="w-full px-6 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-brand-blue transition-all font-medium italic text-gray-400">
+                    <option value="imediata">Imediata (Para ontem)</option>
+                    <option value="1_mes">Em até 1 mês</option>
+                    <option value="pesquisando">Apenas pesquisando</option>
+                  </select>
                 </div>
               </div>
 
